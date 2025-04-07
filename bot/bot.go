@@ -34,18 +34,26 @@ type bot struct {
 
 	scheduler *cron.Cron
 
-	initOnce     sync.Once
-	destroyOnece sync.Once
+	initOnce    sync.Once
+	destroyOnce sync.Once
 }
 
 func (b *bot) init() {
 	// TODO: Implement init
-	return
+	b.initOnce.Do(func() {
+		b.dg.Identify.Intents = discordgo.IntentsGuildMessages
+		b.dg.Open()
+
+		b.sc = make(chan os.Signal, 1)
+		b.scheduler = cron.New()
+	})
 }
 
 func (b *bot) destroy() {
 	// TODO: Implement destroy
-	return
+	b.destroyOnce.Do(func() {
+		b.scheduler.Stop()
+	})
 }
 
 func (b *bot) Start() error {
