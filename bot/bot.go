@@ -46,6 +46,9 @@ func (b *bot) init() {
 
 		b.sc = make(chan os.Signal, 1)
 		b.scheduler = cron.New()
+
+		b.dg.AddHandler(b.handleMessages)
+		// b.dg.AddHandler(b.slashCommandRouter)
 	})
 }
 
