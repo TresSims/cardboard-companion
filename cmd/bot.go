@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"cardboardcompanion/bot"
-	"os"
+	"cardboardcompanion/config"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -31,7 +31,8 @@ var botStartCmd = &cobra.Command{
 func startBot(cmd *cobra.Command, args []string) {
 	log.Info().Msg("Starting the bot!")
 
-	token := os.Getenv("CC_BOT_TOKEN")
+	conf := config.Load()
+	token := conf.Token
 
 	if token == "" {
 		log.Fatal().Msg("No token available! Can't Start!")

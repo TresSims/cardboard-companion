@@ -1,6 +1,8 @@
 package bot
 
 import (
+	"cardboardcompanion/bot/commands"
+	"cardboardcompanion/config"
 	"os"
 	"os/signal"
 	"sync"
@@ -38,17 +40,33 @@ type bot struct {
 	destroyOnce sync.Once
 }
 
+var conf *config.Config
+
 func (b *bot) init() {
 	// TODO: Implement init
 	b.initOnce.Do(func() {
+		conf := config.Load()
+
 		b.dg.Identify.Intents = discordgo.IntentsGuildMessages
 		b.dg.Open()
 
 		b.sc = make(chan os.Signal, 1)
 		b.scheduler = cron.New()
 
+		// Respond to text mesages
 		b.dg.AddHandler(b.handleMessages)
-		// b.dg.AddHandler(b.slashCommandRouter)
+
+		// Resgister Slash Commands
+		b.dg.AddHandler(b.slashCommandRouter)
+		cmdList, _ := commands.All()
+		registeredCommands = make([]*discordgo.ApplicationCommand, len(cmdList))
+		for idx, rawCmd := range cmdList {
+			cmd, err := b.dg.ApplicationCommandCreate(b.dg.State.User.ID, conf.GuildID, rawCmd)
+			if err != nil {
+				log.Fatal().Err(err).Msg("Failed to register application commands")
+			}
+			registeredCommands[idx] = cmd
+		}
 	})
 }
 
