@@ -2,7 +2,9 @@ package bot
 
 import (
 	"cardboardcompanion/bot/commands"
+	"cardboardcompanion/bot/interactions"
 	"cardboardcompanion/config"
+	"fmt"
 	"os"
 	"os/signal"
 	"sync"
@@ -43,7 +45,6 @@ type bot struct {
 var conf *config.Config
 
 func (b *bot) init() {
-	// TODO: Implement init
 	b.initOnce.Do(func() {
 		conf := config.Load()
 
@@ -52,6 +53,14 @@ func (b *bot) init() {
 
 		b.sc = make(chan os.Signal, 1)
 		b.scheduler = cron.New()
+
+		// Schedule Cron Jobs
+		_, err := b.scheduler.AddFunc(conf.PollSchedule, func() { b.send(conf.PollChannel, interactions.PollMessage()) })
+		if err != nil {
+			log.Fatal().Err(err).Msg("Failed to start scheduler")
+		}
+		log.Info().Msg(fmt.Sprintf("Registering command at %s", conf.PollSchedule))
+		b.scheduler.Start()
 
 		// Respond to text mesages
 		b.dg.AddHandler(b.handleMessages)
@@ -71,7 +80,6 @@ func (b *bot) init() {
 }
 
 func (b *bot) destroy() {
-	// TODO: Implement destroy
 	b.destroyOnce.Do(func() {
 		b.scheduler.Stop()
 	})

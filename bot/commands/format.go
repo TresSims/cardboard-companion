@@ -1,20 +1,10 @@
 package commands
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"cardboardcompanion/bot/interactions"
 
-var answers = []discordgo.PollAnswer{
-	{
-		AnswerID: 0,
-		Media:    &discordgo.PollMedia{Text: "EDH"},
-	},
-}
-
-var FormatPoll = &discordgo.Poll{
-	Question:         discordgo.PollMedia{Text: "Format?"},
-	Answers:          answers,
-	AllowMultiselect: false,
-	Duration:         100,
-}
+	"github.com/bwmarrin/discordgo"
+)
 
 var formatCmd = &Definition{
 	"format",
@@ -22,12 +12,7 @@ var formatCmd = &Definition{
 		Description: "Ask folks about the format",
 	},
 	func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Poll: FormatPoll,
-			},
-		})
+		s.InteractionRespond(i.Interaction, interactions.PollInteraction())
 	},
 }
 

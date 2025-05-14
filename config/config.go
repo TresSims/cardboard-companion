@@ -1,9 +1,7 @@
 package config
 
 import (
-	"fmt"
-	"os"
-
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/viper"
 )
 
@@ -36,7 +34,7 @@ func InitConfig() {
 
 	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Couldn't use config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		log.Error().Err(err).Msg("Could not read in config.")
 	}
 }
