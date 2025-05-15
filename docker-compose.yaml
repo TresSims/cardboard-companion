@@ -1,0 +1,8 @@
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/cardboard-companion
+      - ./cardboard-companion.yml:/code/cardboard-companion.yml
