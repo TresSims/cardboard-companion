@@ -26,6 +26,11 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Change case for image
+        id: case
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{github.repository_owner}}/${{github.event.repository.name}}
       - name: Build and Publish Bot
         uses: docker/build-push-action@v5
         with:
@@ -33,5 +38,5 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/cardboardcompanion:latest
+          tags: ghcr.io/${{steps.case.outputs.lowercase}}:latest
 
