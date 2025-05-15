@@ -1,9 +1,9 @@
 package bot
 
 import (
-	"cardboardcompanion/bot/commands"
-	"cardboardcompanion/bot/interactions"
-	"cardboardcompanion/config"
+	"cardboard-companion/bot/commands"
+	"cardboard-companion/bot/interactions"
+	"cardboard-companion/config"
 	"fmt"
 	"os"
 	"os/signal"

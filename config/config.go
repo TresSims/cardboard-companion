@@ -25,7 +25,7 @@ func InitConfig() {
 	} else {
 		viper.AddConfigPath(".")
 		viper.SetConfigType("yml")
-		viper.SetConfigName("cardboardcompanion")
+		viper.SetConfigName("cardboard-companion")
 	}
 
 	for key, value := range defaults {

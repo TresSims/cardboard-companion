@@ -1,4 +1,4 @@
-module cardboardcompanion
+module cardboard-companion
 
 go 1.24.1
 

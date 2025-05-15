@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"cardboardcompanion/bot"
-	"cardboardcompanion/config"
+	"cardboard-companion/bot"
+	"cardboard-companion/config"
 
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"

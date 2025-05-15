@@ -1,7 +1,7 @@
 package main
 
 import (
-	"cardboardcompanion/cmd"
+	"cardboard-companion/cmd"
 )
 
 func main() {

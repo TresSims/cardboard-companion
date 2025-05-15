@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"cardboardcompanion/config"
+	"cardboard-companion/config"
 	"os"
 
 	"github.com/rs/zerolog/log"
@@ -23,7 +23,7 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&config.CfgFile, "config", "", "config file (default is ./cardboardcompanion.yml)")
+	rootCmd.PersistentFlags().StringVar(&config.CfgFile, "config", "", "config file (default is ./cardboard-companion.yml)")
 
 	cobra.OnInitialize(config.InitConfig)
 }

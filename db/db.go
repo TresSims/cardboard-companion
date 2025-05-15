@@ -1,7 +1,7 @@
 package db
 
 import (
-	"cardboardcompanion/config"
+	"cardboard-companion/config"
 	"fmt"
 	"net/url"
 

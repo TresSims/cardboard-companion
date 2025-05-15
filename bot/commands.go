@@ -1,7 +1,7 @@
 package bot
 
 import (
-	"cardboardcompanion/bot/commands"
+	"cardboard-companion/bot/commands"
 
 	"github.com/bwmarrin/discordgo"
 )
