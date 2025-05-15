@@ -55,12 +55,14 @@ func (b *bot) init() {
 		b.scheduler = cron.New()
 
 		// Schedule Cron Jobs
-		_, err := b.scheduler.AddFunc(conf.PollSchedule, func() { b.send(conf.PollChannel, interactions.PollMessage()) })
-		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to start scheduler")
+		if conf.PollSchedule != "" {
+			_, err := b.scheduler.AddFunc(conf.PollSchedule, func() { b.send(conf.PollChannel, interactions.PollMessage()) })
+			if err != nil {
+				log.Fatal().Err(err).Msg("Failed to start scheduler")
+			}
+			log.Info().Msg(fmt.Sprintf("Registering command at %s", conf.PollSchedule))
+			b.scheduler.Start()
 		}
-		log.Info().Msg(fmt.Sprintf("Registering command at %s", conf.PollSchedule))
-		b.scheduler.Start()
 
 		// Respond to text mesages
 		b.dg.AddHandler(b.handleMessages)
