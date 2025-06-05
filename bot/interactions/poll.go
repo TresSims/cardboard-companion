@@ -25,7 +25,7 @@ var formatPoll = &discordgo.Poll{
 	Question:         discordgo.PollMedia{Text: "Another Thursday? Another Poll!"},
 	Answers:          answers,
 	AllowMultiselect: false,
-	Duration:         8,
+	Duration:         10,
 }
 
 var pollInteraction = &discordgo.InteractionResponse{
