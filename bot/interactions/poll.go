@@ -13,14 +13,10 @@ var answers = []discordgo.PollAnswer{
 	},
 	{
 		AnswerID: 2,
-		Media:    &discordgo.PollMedia{Text: "The Wheel"},
-	},
-	{
-		AnswerID: 3,
 		Media:    &discordgo.PollMedia{Text: "Other/Don't Care"},
 	},
 	{
-		AnswerID: 4,
+		AnswerID: 3,
 		Media:    &discordgo.PollMedia{Text: "Can't Play Today"},
 	},
 }
