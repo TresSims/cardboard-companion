@@ -1,0 +1,16 @@
+appname: cardboard-companion
+
+run_cmd: ./cardboard-companion
+
+watch_exts:
+  - .go
+  - .yml
+  - .yaml
+
+cmd_args:
+  - bot
+  - start
+
+disable_run: false
+
+log_level: 'debug'
