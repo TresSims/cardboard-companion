@@ -31,13 +31,22 @@ jobs:
         id: case
         uses: ASzc/change-string-case-action@v6
         with:
-          string: ${{github.repository_owner}}/${{github.event.repository.name}}
-      - name: Build and Publish Bot
+          string: ${{github.repository_owner}}/${{github.event.repository.name}}-test
+      - name: Create Version
+        id: semver-tag
+        uses: gandarez/semver-action@master
+        with:
+          branching_model: "trunk-based"
+      - name: Push latest
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{steps.case.outputs.lowercase}}:latest
+          tags: 
+            - ghcr.io/${{steps.case.outputs.lowercase}}:latest
+            - ghcr.io/${{steps.case.outputs.lowercase}}:{{steps.semver-tag.outputs.semver_tag}}
+      - name: Push Tag
+        uses: docker/build-push-action@v5
 
