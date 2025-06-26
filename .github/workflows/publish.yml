@@ -3,10 +3,10 @@ on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   publish:
-    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -43,10 +43,10 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
-          tags: 
-            - ghcr.io/${{steps.case.outputs.lowercase}}:latest
-            - ghcr.io/${{steps.case.outputs.lowercase}}:{{steps.semver-tag.outputs.semver_tag}}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ghcr.io/${{steps.case.outputs.lowercase}}:latest
+            ghcr.io/${{steps.case.outputs.lowercase}}:{{steps.semver-tag.outputs.semver_tag}}
       - name: Push Tag
         uses: docker/build-push-action@v5
 
