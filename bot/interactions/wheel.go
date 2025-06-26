@@ -48,18 +48,10 @@ func buildWheelContent() string {
 			You got: %s`, games[g])
 }
 
-var attachment = &discordgo.MessageAttachment{
-	ID:       "1",
-	Filename: "./supervisord.conf",
-}
-
-var attachments = []*discordgo.MessageAttachment{attachment}
-
 var wheelInteraction = &discordgo.InteractionResponse{
 	Type: discordgo.InteractionResponseChannelMessageWithSource,
 	Data: &discordgo.InteractionResponseData{
-		Content:     buildWheelContent(),
-		Attachments: &attachments,
+		Content: buildWheelContent(),
 	},
 }
 
