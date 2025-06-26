@@ -1,6 +1,11 @@
 package interactions
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"fmt"
+	"time"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 var answers = []discordgo.PollAnswer{
 	{
@@ -31,8 +36,17 @@ var formatPoll = &discordgo.Poll{
 var pollInteraction = &discordgo.InteractionResponse{
 	Type: discordgo.InteractionResponseChannelMessageWithSource,
 	Data: &discordgo.InteractionResponseData{
-		Poll: formatPoll,
+		Poll:    formatPoll,
+		Content: buildPollText(formatPoll.Duration),
 	},
+}
+
+func buildPollText(countDown int) string {
+	now := time.Now()
+
+	gameTime := int(now.Unix()) + countDown*60*60 // hours -> minutes -> seconds
+
+	return fmt.Sprintf("It's game time folks! Please vote in the poll, it's how we know who's coming to play! See you at <t:%d>", gameTime)
 }
 
 func PollInteraction() *discordgo.InteractionResponse {
