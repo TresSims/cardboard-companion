@@ -37,14 +37,14 @@ var pollInteraction = &discordgo.InteractionResponse{
 	Type: discordgo.InteractionResponseChannelMessageWithSource,
 	Data: &discordgo.InteractionResponseData{
 		Poll:    formatPoll,
-		Content: buildPollText(formatPoll.Duration),
+		Content: buildPollText(formatPoll.Duration*60 + 30), // hours -> minutes
 	},
 }
 
-func buildPollText(countDown int) string {
+func buildPollText(minutesLeft int) string {
 	now := time.Now()
 
-	gameTime := int(now.Unix()) + countDown*60*60 // hours -> minutes -> seconds
+	gameTime := int(now.Unix()) + minutesLeft*60 // minutes -> seconds
 
 	return fmt.Sprintf("It's game time folks! Please vote in the poll, it's how we know who's coming to play! See you at <t:%d>", gameTime)
 }
