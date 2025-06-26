@@ -46,7 +46,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ghcr.io/${{steps.case.outputs.lowercase}}:latest
-            ghcr.io/${{steps.case.outputs.lowercase}}:{{steps.semver-tag.outputs.semver_tag}}
+            ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.semver_tag}}
       - name: Push Tag
         uses: docker/build-push-action@v5
 
