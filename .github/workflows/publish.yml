@@ -33,12 +33,10 @@ jobs:
         with:
           string: ${{github.repository_owner}}/${{github.event.repository.name}}-test
       - name: Create Version
-        if: ${{ github.event_name != 'pull_request' }}
         id: semver-tag
-        uses: gandarez/semver-action@master
+        uses: paulhatch/semantic-version@v5.4.0
         with:
-          branching_model: "trunk-based"
-          main_branch_name: main
+          version_format: "${major}.${minor}.${patch}-${increment}"
       - name: Push latest
         uses: docker/build-push-action@v5
         with:
@@ -48,7 +46,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
             ghcr.io/${{steps.case.outputs.lowercase}}:latest
-            ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.semver_tag}}
+            ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.version}}
       - name: Push Tag
         uses: docker/build-push-action@v5
 
