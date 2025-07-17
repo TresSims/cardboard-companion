@@ -12,7 +12,8 @@ var formatCmd = &Definition{
 		Description: "Ask folks about the format",
 	},
 	func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		s.InteractionRespond(i.Interaction, interactions.PollInteraction())
+		response := interactions.PollInteraction.InteractionToInteractionResponse()
+		s.InteractionRespond(i.Interaction, &response)
 	},
 }
 

@@ -48,13 +48,12 @@ func buildWheelContent() string {
 			You got: %s`, games[g])
 }
 
-var wheelInteraction = &discordgo.InteractionResponse{
-	Type: discordgo.InteractionResponseChannelMessageWithSource,
-	Data: &discordgo.InteractionResponseData{
-		Content: buildWheelContent(),
-	},
-}
-
-func WheelInteraction() *discordgo.InteractionResponse {
-	return wheelInteraction
+var WheelInteraction = &Interaction{
+	Content:         buildWheelContent,
+	Poll:            func() *discordgo.Poll { return nil },
+	Embeds:          func() []*discordgo.MessageEmbed { return nil },
+	TTS:             func() bool { return false },
+	Components:      func() []discordgo.MessageComponent { return nil },
+	Files:           func() []*discordgo.File { return nil },
+	AllowedMentions: func() *discordgo.MessageAllowedMentions { return nil },
 }
