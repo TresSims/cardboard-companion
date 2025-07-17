@@ -7,6 +7,10 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+var pollDuration = 10
+
+var minutesUntilGame int = pollDuration*60 + 30
+
 var answers = []discordgo.PollAnswer{
 	{
 		AnswerID: 0,
@@ -18,27 +22,23 @@ var answers = []discordgo.PollAnswer{
 	},
 	{
 		AnswerID: 2,
-		Media:    &discordgo.PollMedia{Text: "Other/Don't Care"},
+		Media:    &discordgo.PollMedia{Text: "The Wheel"},
 	},
 	{
 		AnswerID: 3,
+		Media:    &discordgo.PollMedia{Text: "Other/Don't Care"},
+	},
+	{
+		AnswerID: 4,
 		Media:    &discordgo.PollMedia{Text: "Can't Play Today"},
 	},
 }
 
-var formatPoll = &discordgo.Poll{
+var formatPoll = discordgo.Poll{
 	Question:         discordgo.PollMedia{Text: "Another Thursday? Another Poll!"},
 	Answers:          answers,
 	AllowMultiselect: false,
-	Duration:         10,
-}
-
-var pollInteraction = &discordgo.InteractionResponse{
-	Type: discordgo.InteractionResponseChannelMessageWithSource,
-	Data: &discordgo.InteractionResponseData{
-		Poll:    formatPoll,
-		Content: buildPollText(formatPoll.Duration*60 + 30), // hours -> minutes
-	},
+	Duration:         pollDuration,
 }
 
 func buildPollText(minutesLeft int) string {
@@ -49,14 +49,12 @@ func buildPollText(minutesLeft int) string {
 	return fmt.Sprintf("It's game time folks! Please vote in the poll, it's how we know who's coming to play! See you at <t:%d>", gameTime)
 }
 
-func PollInteraction() *discordgo.InteractionResponse {
-	return pollInteraction
-}
-
-var pollMessage = &discordgo.MessageSend{
-	Poll: formatPoll,
-}
-
-func PollMessage() *discordgo.MessageSend {
-	return pollMessage
+var PollInteraction = &Interaction{
+	Content:         func() string { return buildPollText(minutesUntilGame) },
+	Poll:            func() *discordgo.Poll { return &formatPoll },
+	Embeds:          func() []*discordgo.MessageEmbed { return nil },
+	TTS:             func() bool { return false },
+	Components:      func() []discordgo.MessageComponent { return nil },
+	Files:           func() []*discordgo.File { return nil },
+	AllowedMentions: func() *discordgo.MessageAllowedMentions { return nil },
 }

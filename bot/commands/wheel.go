@@ -12,7 +12,8 @@ var wheelCmd = &Definition{
 		Description: "Spin da wheel",
 	},
 	func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		s.InteractionRespond(i.Interaction, interactions.WheelInteraction())
+		response := interactions.WheelInteraction.InteractionToInteractionResponse()
+		s.InteractionRespond(i.Interaction, &response)
 	},
 }
 

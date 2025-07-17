@@ -14,8 +14,4 @@ func (b *bot) handleMessages(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	msg := fmt.Sprintf("RCV [%v] - %v", m.ChannelID, m.Content)
 	log.Info().Msg(msg)
-
-	if m.Content == "ping" {
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
-	}
 }
