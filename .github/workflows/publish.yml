@@ -39,7 +39,7 @@ jobs:
         uses: paulhatch/semantic-version@v5.4.0
         with:
           version_format: "${major}.${minor}.${patch}-${increment}"
-      - name: Push latest
+      - name: Build and Push latest
         uses: docker/build-push-action@v5
         with:
           context: .
