@@ -1,0 +1,15 @@
+name: version
+on:
+  push:
+    barnches:
+      - main
+  pull_request:
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+

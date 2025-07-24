@@ -1,6 +1,11 @@
 package interactions
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"fmt"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/rs/zerolog/log"
+)
 
 type Interaction struct {
 	Content         func() string
@@ -13,6 +18,7 @@ type Interaction struct {
 }
 
 func (i Interaction) InteractionToInteractionResponse() discordgo.InteractionResponse {
+	log.Debug().Msg(fmt.Sprintf("Building interaction response for %T", i))
 	return discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
 		Data: &discordgo.InteractionResponseData{
@@ -28,6 +34,7 @@ func (i Interaction) InteractionToInteractionResponse() discordgo.InteractionRes
 }
 
 func (i Interaction) InteractionToMessageSend() discordgo.MessageSend {
+	log.Debug().Msg(fmt.Sprintf("Building message send for %T", i))
 	return discordgo.MessageSend{
 		Content:         i.Content(),
 		Poll:            i.Poll(),

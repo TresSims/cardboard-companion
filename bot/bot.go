@@ -56,8 +56,10 @@ func (b *bot) init() {
 
 		// Schedule Cron Jobs
 		if conf.PollSchedule != "" {
-			message := interactions.PollInteraction.InteractionToMessageSend()
-			_, err := b.scheduler.AddFunc(conf.PollSchedule, func() { b.send(conf.PollChannel, &message) })
+			_, err := b.scheduler.AddFunc(conf.PollSchedule, func() {
+				message := interactions.PollInteraction.InteractionToMessageSend()
+				b.send(conf.PollChannel, &message)
+			})
 			if err != nil {
 				log.Fatal().Err(err).Msg("Failed to start scheduler")
 			}
