@@ -41,16 +41,7 @@ var formatPoll = discordgo.Poll{
 	Duration:         pollDuration,
 }
 
-var pollInteraction = &discordgo.InteractionResponse{
-	Type: discordgo.InteractionResponseChannelMessageWithSource,
-	Data: &discordgo.InteractionResponseData{
-		Poll:    formatPoll,
-		Content: buildPollText(), // hours -> minutes
-	},
-}
-
-func buildPollText() string {
-	minutesLeft := formatPoll.Duration*60 + 30
+func buildPollText(minutesLeft int) string {
 	now := time.Now()
 
 	gameTime := int(now.Unix()) + minutesLeft*60 // minutes -> seconds
