@@ -7,6 +7,7 @@ jobs:
   version:
     uses: TresSims/auto-devops/.github/workflows/version.yml@1-version-pipeline
     id: semver-tag
+
   build:
     runs-on: ubuntu-latest
     permissions:
