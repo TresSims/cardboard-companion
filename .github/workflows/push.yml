@@ -8,5 +8,6 @@ jobs:
     uses: TresSims/auto-devops/.github/workflows/version.yml@1-version-pipeline
   docker:
     uses: TresSims/auto-devops/.github/workflows/docker.yml@1-version-pipeline
+    needs: version
     with:
-      tags: ${{jobs.version.tags}}
+      tags: ${{needs.version.outputs.tags}}
