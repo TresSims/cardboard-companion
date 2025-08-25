@@ -13,34 +13,17 @@ jobs:
     permissions:
       contents: read
       packages: write
+    outputs:
+      version: ${{ steps.version.otputs.version }}
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Create Version
-        id: release-version
+        id: version
         uses: PaulHatch/semantic-version@v5.4.0
         with:
           version_format: "${major}.${minor}.${patch}"
-      - name: Create version releases
-        if: ${{github.event_name != 'pull_request'}}
-        uses: rickstaa/action-create-tag@v1
-        with:
-          tag: steps.release-version.outputs.version
-      - name: Create latest releases
-        if: ${{github.event_name != 'pull_request'}}
-        uses: rickstaa/action-create-tag@v1
-        with:
-          tag: latest
-      - name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@master
-      - name: Change case for image
-        id: case
-        uses: ASzc/change-string-case-action@v6
-        with:
-          string: ${{github.repository_owner}}/${{github.event.repository.name}}
-            ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.version}}
   lint:
     runs-on: ubuntu-latest
     permissions:
@@ -55,12 +38,34 @@ jobs:
         with: 
           version: v2.1
   build:
+    needs: 
+      - version
+      - lint
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
       - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+      - name: Create version releases
+        if: ${{github.event_name != 'pull_request'}}
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: steps.release-version.outputs.version
+      - name: Create latest releases
+        if: ${{github.event_name != 'pull_request'}}
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: latest
+      - name: Change case for image
+        id: case
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{github.repository_owner}}/${{github.event.repository.name}}
+            ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.version}}
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
@@ -70,3 +75,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/${{steps.case.outputs.lowercase}}:latest
+            ghcr.io/${{steps.case.outputs.lowercase}}:${{needs.version.outputs.version}}
