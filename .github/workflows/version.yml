@@ -1,0 +1,40 @@
+name: push
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Create Version
+        id: release-version
+        uses: PaulHatch/semantic-version@v5.4.0
+        with:
+          version_format: "${major}.${minor}.${patch}"
+      - name: Create version releases
+        if: inputs.create-release
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: steps.release-version.outputs.version
+      - name: Create latest releases
+        if: inputs.create-release
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: latest
+
+
+
+
+
+
+
+
