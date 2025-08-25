@@ -30,13 +30,6 @@ jobs:
         uses: rickstaa/action-create-tag@v1
         with:
           tag: latest
-  release:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-
-    steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
         id: buildx
@@ -52,7 +45,10 @@ jobs:
           context: .
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
-          tags: ${{ inputs.tags }}
+          tags: |
+            ghcr.io/${{steps.case.outputs.lowercase}}:latest
+            ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.version}}
+
     
 
 
