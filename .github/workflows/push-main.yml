@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+  pull_request:
+
 
 
 jobs:
@@ -21,16 +23,15 @@ jobs:
         with:
           version_format: "${major}.${minor}.${patch}"
       - name: Create version releases
-        if: inputs.create-release
+        if: ${{github.event_name != 'pull_request'}}
         uses: rickstaa/action-create-tag@v1
         with:
           tag: steps.release-version.outputs.version
       - name: Create latest releases
-        if: inputs.create-release
+        if: ${{github.event_name != 'pull_request'}}
         uses: rickstaa/action-create-tag@v1
         with:
           tag: latest
-      - uses: actions/checkout@v3
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@master
@@ -44,17 +45,28 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/${{steps.case.outputs.lowercase}}:latest
             ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.version}}
-
-    
-
-
-
-
-
-
-
-
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with: 
+          version: v2.1
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses:
