@@ -46,18 +46,24 @@ var conf *config.Config
 
 func (b *bot) init() {
 	b.initOnce.Do(func() {
-		conf := config.Load()
+		conf = config.Load()
 
 		b.dg.Identify.Intents = discordgo.IntentsGuildMessages
-		b.dg.Open()
+		err := b.dg.Open()
+		if err != nil {
+			log.Fatal().Err(err).Msg("Bot could not start")
+		}
 
 		b.sc = make(chan os.Signal, 1)
 		b.scheduler = cron.New()
 
 		// Schedule Cron Jobs
 		if conf.PollSchedule != "" {
-			message := interactions.PollInteraction.InteractionToMessageSend()
-			_, err := b.scheduler.AddFunc(conf.PollSchedule, func() { b.send(conf.PollChannel, &message) })
+			_, err := b.scheduler.AddFunc(conf.PollSchedule, func() {
+				log.Info().Msg("Building Cron Job interaction")
+				message := interactions.PollInteraction.InteractionToMessageSend()
+				b.send(conf.PollChannel, &message)
+			})
 			if err != nil {
 				log.Fatal().Err(err).Msg("Failed to start scheduler")
 			}
@@ -106,6 +112,9 @@ func (b *bot) Stop() {
 
 	log.Info().Msg("Draining down poliely. Please Wait")
 	b.destroy()
-	b.dg.Close()
+	err := b.dg.Close()
+	if err != nil {
+		log.Fatal().Err(err).Msg("Crashed closing the bot. Don't worry, it probably stopped.")
+	}
 	log.Info().Msg("All done!")
 }

@@ -1,0 +1,81 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Create Version
+        id: version
+        uses: PaulHatch/semantic-version@v5.4.0
+        with:
+          version_format: "v${major}.${minor}.${patch}"
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with: 
+          version: v2.1
+  build:
+    needs: 
+      - version
+      - lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+      - name: Create version releases
+        if: ${{github.event_name != 'pull_request'}}
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: ${{needs.version.outputs.version}}
+          force_push_tag: true
+      - name: Create latest releases
+        if: ${{github.event_name != 'pull_request'}}
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: latest
+          force_push_tag: true
+      - name: Change case for image
+        id: case
+        uses: ASzc/change-string-case-action@v6
+        with:
+          string: ${{github.repository_owner}}/${{github.event.repository.name}}
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/${{steps.case.outputs.lowercase}}:latest
+            ghcr.io/${{steps.case.outputs.lowercase}}:${{needs.version.outputs.version}}
