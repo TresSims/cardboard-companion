@@ -65,7 +65,6 @@ jobs:
         uses: ASzc/change-string-case-action@v6
         with:
           string: ${{github.repository_owner}}/${{github.event.repository.name}}
-            ghcr.io/${{steps.case.outputs.lowercase}}:${{steps.semver-tag.outputs.version}}
       - name: Build and Push
         uses: docker/build-push-action@v5
         with:
