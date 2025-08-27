@@ -49,7 +49,10 @@ func (b *bot) init() {
 		conf := config.Load()
 
 		b.dg.Identify.Intents = discordgo.IntentsGuildMessages
-		b.dg.Open()
+		err := b.dg.Open()
+		if err != nil {
+			log.Fatal().Err(err).Msg("Bot could not start")
+		}
 
 		b.sc = make(chan os.Signal, 1)
 		b.scheduler = cron.New()
@@ -108,6 +111,9 @@ func (b *bot) Stop() {
 
 	log.Info().Msg("Draining down poliely. Please Wait")
 	b.destroy()
-	b.dg.Close()
+	err := b.dg.Close()
+	if err != nil {
+		log.Fatal().Err(err).Msg("Crashed closing the bot. Don't worry, it probably stopped.")
+	}
 	log.Info().Msg("All done!")
 }
