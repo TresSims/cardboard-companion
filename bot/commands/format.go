@@ -4,6 +4,7 @@ import (
 	"cardboard-companion/bot/interactions"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/rs/zerolog/log"
 )
 
 var formatCmd = &Definition{
@@ -13,7 +14,10 @@ var formatCmd = &Definition{
 	},
 	func(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		response := interactions.PollInteraction.InteractionToInteractionResponse()
-		s.InteractionRespond(i.Interaction, &response)
+		err := s.InteractionRespond(i.Interaction, &response)
+		if err != nil {
+			log.Error().Err(err).Msg("Couldn't call the format command")
+		}
 	},
 }
 

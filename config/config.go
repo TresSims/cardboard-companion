@@ -15,7 +15,10 @@ func Load() *Config {
 	}
 
 	current = &Config{}
-	viper.Unmarshal(current)
+	err := viper.Unmarshal(current)
+	if err != nil {
+		log.Error().Err(err).Msg("Couldn't unmarchal config")
+	}
 	return current
 }
 

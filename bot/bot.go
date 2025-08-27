@@ -46,7 +46,7 @@ var conf *config.Config
 
 func (b *bot) init() {
 	b.initOnce.Do(func() {
-		conf := config.Load()
+		conf = config.Load()
 
 		b.dg.Identify.Intents = discordgo.IntentsGuildMessages
 		err := b.dg.Open()
