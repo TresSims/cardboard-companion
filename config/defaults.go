@@ -6,6 +6,11 @@ type Config struct {
 
 	PollSchedule string
 	PollChannel  string
+
+	Web struct {
+		Port     int
+		Frontend string
+	}
 }
 
 var defaults = map[string]any{}
