@@ -1,22 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #1a1b16;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --fg-hilight: #ffba6c;
+  --header-bg: #406380;
+  --footer-bg: #406280;
+  --card-bg: rgba(64,94,128,125);
+  --list-bg: #192f80;
+  --list-item-bg: #000000;
+  --list-item-fg: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #1a1b16;
     --foreground: #ededed;
+    --fg-hilight: #ffba6c;
+    --header-bg: #406380;
+    --footer-bg: #406280;
+    --card-bg: rgba(64,94,128,124);
+    --list-bg: #192f80;
+    --list-item-bg: #000000;
+    --list-item-fg: #ffffff;
   }
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-fg-hilight: var(--fg-hilight);
+  --color-header-bg: var(--header-bg);
+  --color-footer-bg: var(--footer-bg);
+  --color-card-bg: var(--card-bg);
+  --color-list-bg: var(--list-bg);
+  --color-list-item-bg: var(--list-item-bg);
+  --color-list-item-fg: var(--list-item-fg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
 }
 
 body {
