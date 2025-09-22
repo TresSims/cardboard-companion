@@ -6,3 +6,5 @@ services:
     volumes:
       - ./:/cardboard-companion
       - ./cardboard-companion.yml:/code/cardboard-companion.yml
+    ports:
+      - 3000:3000
