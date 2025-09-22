@@ -3,8 +3,41 @@
 import { useState } from 'react';
 import { ListBox, SortableItem } from '../list'
 
+const wheelList = [
+  "Planechase",
+  "Share the Spoils",
+  "Quiz Commander",
+  "Truly Random",
+  "Monochrome Matchup",
+  "Mechanic Mashup",
+  "Any # of Fools",
+  "Bidget Battle",
+  "Keywork Klash",
+  "Partner Up",
+  "Guild Wars",
+  "Oathbreaker",
+  "Tribal Throwdown",
+  "Color Swap",
+  "Pauper EDH",
+  "Oldies but Goodies",
+  "Framed Fight",
+  "Alt Win Con",
+  "Set Showdown",
+  "Teeny Weenies",
+  "Big Chungies",
+  "Planeswalekr Party",
+  "Precon Party",
+  "Usurper/Kingdoms",
+  "Archenemy",
+  "Deck Swap",
+  "Gifts Only",
+  "Booster Pack Madness",
+  "Bounties",
+  "Two-Headed Giant",
+]
+
 export default function Wheel() {
-  const [items, setItems] = useState(["TwoHeaded Strix", "Commander", "Other Commander", "Third Commander"])
+  const [items, setItems] = useState(wheelList)
 
   return (
     <ListBox
