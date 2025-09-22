@@ -1,0 +1,38 @@
+baseURL: https://cardboard-companion.com
+title: CardboardCompanion Docs
+
+contentDir: content/en
+defaultContentLanguage: en
+defaultContentLanguageSubdir: false
+
+enableMissingTranslationPlaceholders: true
+
+enableRobotsTXT: true
+
+enableGitInfo: true
+
+version: 0.1.0
+url_latest_version: https://cardboard-companion.com
+
+github_repo: https://github.com/tressims/cardboard-companion
+github_branch: main
+
+params:
+  ui:
+    showLightDarkModeMenu: true
+
+markup:
+  goldmark:
+    parser:
+      attribue:
+        block: true
+    renderer:
+      unsafe: true
+
+module:
+  hugoVersion:
+    extended: true
+    min: 0.110.0
+  imports:
+    - path: github.com/google/docsy
+      diable: false
