@@ -9,6 +9,7 @@ on:
 
 jobs:
   version:
+    if: ${{ !startsWith(github.event.head_commit.message, '(SKIP-BUILD)') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -45,6 +46,7 @@ jobs:
     permissions:
       contents: write
       packages: write
+    if: ${{ !startsWith(github.event.head_commit.message, '(SKIP-BUILD)') }}
     steps:
       - uses: actions/checkout@v3
         with:
@@ -81,7 +83,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' }} 
           platforms: linux/amd64,linux/arm64
           tags: |
             ghcr.io/${{steps.case.outputs.lowercase}}:latest
