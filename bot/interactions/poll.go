@@ -30,6 +30,10 @@ var answers = []discordgo.PollAnswer{
 	},
 	{
 		AnswerID: 4,
+		Media:    &discordgo.PollMedia{Text: "Jack Goes to Selesnya Jail"},
+	},
+	{
+		AnswerID: 5,
 		Media:    &discordgo.PollMedia{Text: "Can't Play Today"},
 	},
 }
