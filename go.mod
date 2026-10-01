@@ -5,7 +5,7 @@ go 1.25.0
 require (
 	github.com/bwmarrin/discordgo v0.29.0
 	github.com/robfig/cron/v3 v3.0.1
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	gorm.io/gorm v1.26.1
