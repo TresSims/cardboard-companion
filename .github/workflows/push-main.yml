@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
       - name: Create Version
         id: version
-        uses: PaulHatch/semantic-version@v5.4.0
+        uses: PaulHatch/semantic-version@v6.0.5
         with:
           version_format: "v${major}.${minor}.${patch}"
   lint:
